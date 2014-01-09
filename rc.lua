@@ -459,7 +459,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 autorunApps =
 {
     "xcompmgr &",
-    "fcitx -d",
+    "fcitx -r &",
 }
 
 for app = 1, #autorunApps do

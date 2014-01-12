@@ -116,16 +116,32 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 mytextclock = awful.widget.textclock()
 
 volumeWidget = wibox.widget.textbox()
-vicious.register(volumeWidget, vicious.widgets.volume, " $2$1", 2, "Master")
+
+local updatevolume = function() 
+    volumedata = vicious.widgets.volume("$2$1", "Master")
+    volumeWidget:set_text(volumedata[2] .. volumedata[1])
+end
+
+updatevolume()
+
 volumeWidget:buttons(awful.util.table.join(
-    awful.button({ }, 4, function () awful.util.spawn("amixer -q set Master 5%+ unmute") end),
-    awful.button({ }, 5, function () awful.util.spawn("amixer -q set Master 5%- unmute") end),
-    awful.button({ }, 1, function () awful.util.spawn("amixer -q set Master toggle") end)
+    awful.button({ }, 4, function () 
+                            awful.util.spawn("amixer -q set Master 1%+ unmute") 
+                            updatevolume() 
+                         end),
+    awful.button({ }, 5, function () 
+                            awful.util.spawn("amixer -q set Master 1%- unmute") 
+                            updatevolume() 
+                         end),
+    awful.button({ }, 1, function () 
+                            awful.util.spawn("amixer -q set Master toggle") 
+                            updatevolume() 
+                         end)
     )
 )
 
 batteryWidget = wibox.widget.textbox()
-vicious.register(batteryWidget, vicious.widgets.bat, "|| $1$2", 61, "BAT0")
+vicious.register(batteryWidget, vicious.widgets.bat, " $1$2", 61, "BAT0")
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -229,13 +245,13 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
-    awful.key({ modkey, "Shift"   }, "f", function () awful.util.spawn_with_shell("spacefm") end),
-    awful.key({ modkey, "Shift"   }, "w", function () awful.util.spawn_with_shell("firefox") end),
-    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn_with_shell("amixer -q set Master 5%+ unmute") end),
-    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn_with_shell("amixer -q set Master 5%- unmute") end),
-    awful.key({ }, "XF86AudioMute", function () awful.util.spawn_with_shell("amixer -q set Master toggle") end),
-    awful.key({ }, "XF86MonBrightnessUp", function () awful.util.spawn_with_shell("xbacklight +10") end),
-    awful.key({ }, "XF86MonBrightnessDown", function () awful.util.spawn_with_shell("xbacklight -10") end),
+    awful.key({ modkey, "Shift"   }, "f", function () awful.util.spawn("spacefm") end),
+    awful.key({ modkey, "Shift"   }, "w", function () awful.util.spawn("firefox") end),
+    awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q set Master 5%+ unmute") end),
+    awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q set Master 5%- unmute") end),
+    awful.key({ }, "XF86AudioMute", function () awful.util.spawn("amixer -q set Master toggle") end),
+    awful.key({ }, "XF86MonBrightnessUp", function () awful.util.spawn("xbacklight +10") end),
+    awful.key({ }, "XF86MonBrightnessDown", function () awful.util.spawn("xbacklight -10") end),
 
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),

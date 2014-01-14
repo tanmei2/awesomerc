@@ -246,6 +246,7 @@ root.buttons(awful.util.table.join(
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "f", function () awful.util.spawn("spacefm") end),
+    awful.key({ modkey,           }, "s", function () awful.util.spawn_with_shell("sleep 1;scrot -s") end),
     awful.key({ modkey, "Shift"   }, "w", function () awful.util.spawn("firefox") end),
     awful.key({ }, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q set Master 5%+ unmute") end),
     awful.key({ }, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q set Master 5%- unmute") end),
